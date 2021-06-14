@@ -41,6 +41,14 @@ namespace YololFleetsGUI
             btnRunBattleSimulation.Enabled = fleet1Selected && fleet2Selected;
         }
 
+        private void SimulationOutputHandler(object sender, DataReceivedEventArgs e)
+        {
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                rtbConsoleOutput.AppendText((e.Data ?? string.Empty) + Environment.NewLine);
+            }));
+        }
+
         private void btnRunBattleSimulation_Click(object sender, EventArgs e)
         {
             string simulatorPath = Preferences.current.CombatSimulatorFilePath;
@@ -50,8 +58,14 @@ namespace YololFleetsGUI
                 Process simulation = new Process();
                 simulation.StartInfo.FileName = simulatorPath;
                 simulation.StartInfo.Arguments = $"-a {Fleet1Browser.SelectedPath} -b {Fleet2Browser.SelectedPath}";
+                simulation.StartInfo.RedirectStandardOutput = true;
+                simulation.StartInfo.CreateNoWindow = true;
+
+                simulation.OutputDataReceived += new DataReceivedEventHandler(SimulationOutputHandler);
 
                 simulation.Start();
+
+                simulation.BeginOutputReadLine();
             }
             else
             {

@@ -36,6 +36,7 @@ namespace YololFleetsGUI
             this.btnRunBattleSimulation = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnSaveReplay = new System.Windows.Forms.Button();
+            this.rtbConsoleOutput = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // tbFleet1
@@ -107,11 +108,27 @@ namespace YololFleetsGUI
             this.btnSaveReplay.Text = "Save Replay";
             this.btnSaveReplay.UseVisualStyleBackColor = true;
             // 
+            // rtbConsoleOutput
+            // 
+            this.rtbConsoleOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.rtbConsoleOutput.Font = new System.Drawing.Font("Courier New", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.rtbConsoleOutput.Location = new System.Drawing.Point(12, 148);
+            this.rtbConsoleOutput.Name = "rtbConsoleOutput";
+            this.rtbConsoleOutput.ReadOnly = true;
+            this.rtbConsoleOutput.ShowSelectionMargin = true;
+            this.rtbConsoleOutput.Size = new System.Drawing.Size(481, 420);
+            this.rtbConsoleOutput.TabIndex = 7;
+            this.rtbConsoleOutput.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(505, 450);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(505, 580);
+            this.Controls.Add(this.rtbConsoleOutput);
             this.Controls.Add(this.btnSaveReplay);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnRunBattleSimulation);
@@ -132,6 +149,7 @@ namespace YololFleetsGUI
         private System.Windows.Forms.Button btnRunBattleSimulation;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnSaveReplay;
+        private System.Windows.Forms.RichTextBox rtbConsoleOutput;
     }
 }
 
