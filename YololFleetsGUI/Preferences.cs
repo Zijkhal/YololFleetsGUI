@@ -16,6 +16,8 @@ namespace YololFleetsGUI
         public static readonly string combatSimulatorFileName = "SpaceShipCombatSimulator.exe";
         public static readonly string playerFileName = "SaturnsEnvy.exe";
         public static readonly string settingsFileName = "settings.json";
+        public static readonly string defaultReplayFileName = "replay.json.deflate";
+        public static readonly string winnerMessagePrefix = "Winner:";
 
         [JsonIgnore]
         public string CombatSimulatorFilePath { get { string path = $@"{CombatSimulatorPath}\{combatSimulatorFileName}"; return File.Exists(path) ? path : string.Empty; } }

@@ -37,6 +37,8 @@ namespace YololFleetsGUI
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnSaveReplay = new System.Windows.Forms.Button();
             this.rtbConsoleOutput = new System.Windows.Forms.RichTextBox();
+            this.lblWinner = new System.Windows.Forms.Label();
+            this.saveReplayDialog = new System.Windows.Forms.SaveFileDialog();
             this.SuspendLayout();
             // 
             // tbFleet1
@@ -100,13 +102,13 @@ namespace YololFleetsGUI
             // 
             // btnSaveReplay
             // 
-            this.btnSaveReplay.Enabled = false;
             this.btnSaveReplay.Location = new System.Drawing.Point(93, 119);
             this.btnSaveReplay.Name = "btnSaveReplay";
             this.btnSaveReplay.Size = new System.Drawing.Size(88, 23);
             this.btnSaveReplay.TabIndex = 6;
             this.btnSaveReplay.Text = "Save Replay";
             this.btnSaveReplay.UseVisualStyleBackColor = true;
+            this.btnSaveReplay.Click += new System.EventHandler(this.btnSaveReplay_Click);
             // 
             // rtbConsoleOutput
             // 
@@ -122,12 +124,29 @@ namespace YololFleetsGUI
             this.rtbConsoleOutput.TabIndex = 7;
             this.rtbConsoleOutput.Text = "";
             // 
+            // lblWinner
+            // 
+            this.lblWinner.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblWinner.Location = new System.Drawing.Point(12, 43);
+            this.lblWinner.Name = "lblWinner";
+            this.lblWinner.Size = new System.Drawing.Size(481, 15);
+            this.lblWinner.TabIndex = 8;
+            this.lblWinner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // saveReplayDialog
+            // 
+            this.saveReplayDialog.AddExtension = false;
+            this.saveReplayDialog.DefaultExt = "json.deflate";
+            this.saveReplayDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveReplayDialog_FileOk);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(505, 580);
+            this.Controls.Add(this.lblWinner);
             this.Controls.Add(this.rtbConsoleOutput);
             this.Controls.Add(this.btnSaveReplay);
             this.Controls.Add(this.btnSettings);
@@ -150,6 +169,8 @@ namespace YololFleetsGUI
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnSaveReplay;
         private System.Windows.Forms.RichTextBox rtbConsoleOutput;
+        private System.Windows.Forms.Label lblWinner;
+        private System.Windows.Forms.SaveFileDialog saveReplayDialog;
     }
 }
 

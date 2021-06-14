@@ -5,9 +5,12 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
+using System.IO;
 
 namespace YololFleetsGUI
 {
@@ -43,21 +46,34 @@ namespace YololFleetsGUI
 
         private void SimulationOutputHandler(object sender, DataReceivedEventArgs e)
         {
+            string msg = e.Data ?? string.Empty;
+
+            if (msg.Contains(Preferences.winnerMessagePrefix))
+            {
+                this.BeginInvoke(new MethodInvoker(() =>
+                {
+                    lblWinner.Text = msg;
+                }));
+            }
+
             this.BeginInvoke(new MethodInvoker(() =>
             {
-                rtbConsoleOutput.AppendText((e.Data ?? string.Empty) + Environment.NewLine);
+                rtbConsoleOutput.AppendText(msg + Environment.NewLine);
             }));
         }
 
         private void btnRunBattleSimulation_Click(object sender, EventArgs e)
         {
+            lblWinner.Text = string.Empty;
+
             string simulatorPath = Preferences.current.CombatSimulatorFilePath;
 
             if(simulatorPath != string.Empty)
             {
                 Process simulation = new Process();
                 simulation.StartInfo.FileName = simulatorPath;
-                simulation.StartInfo.Arguments = $"-a {Fleet1Browser.SelectedPath} -b {Fleet2Browser.SelectedPath}";
+                string outputFilePath = $@"{Preferences.current.CombatSimulatorPath}\{Preferences.defaultReplayFileName}";
+                simulation.StartInfo.Arguments = $"-a {Fleet1Browser.SelectedPath} -b {Fleet2Browser.SelectedPath} -o {outputFilePath}";
                 simulation.StartInfo.RedirectStandardOutput = true;
                 simulation.StartInfo.CreateNoWindow = true;
 
@@ -69,7 +85,7 @@ namespace YololFleetsGUI
             }
             else
             {
-                MessageBox.Show("Combat simulator is not found, go to settings to specify it's location!");
+                MessageBox.Show("Combat simulator not found, go to settings to specify its location!");
             }
         }
 
@@ -80,6 +96,33 @@ namespace YololFleetsGUI
             settings.Show();
             settings.BringToFront();
             settings.Focus();
+        }
+
+        private void btnSaveReplay_Click(object sender, EventArgs e)
+        {
+            string replayToSave = $@"{Preferences.current.CombatSimulatorPath}\{Preferences.defaultReplayFileName}";
+
+            if (File.Exists(replayToSave))
+            {
+                saveReplayDialog.ShowDialog();
+
+                File.Copy(replayToSave, saveReplayDialog.FileName);
+
+                saveReplayDialog.FileName = string.Empty;
+            }
+            else
+            {
+                MessageBox.Show("replay not found");
+            }
+        }
+
+        private void saveReplayDialog_FileOk(object sender, CancelEventArgs e)
+        {
+            if (!saveReplayDialog.FileName.EndsWith(saveReplayDialog.DefaultExt))
+            {
+                MessageBox.Show($"The replay file must have the extension {saveReplayDialog.DefaultExt}");
+                e.Cancel = true;
+            }
         }
     }
 }
