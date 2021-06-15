@@ -13,6 +13,8 @@ namespace YololFleetsGUI
 
         private Process combatSimulator = null;
         private Process replayPlayer = null;
+        private bool combatSimulatorRunning = false;
+        private bool replayPlayerRunning = false;
 
         public Form1()
         {
@@ -43,18 +45,54 @@ namespace YololFleetsGUI
         {
             string msg = e.Data ?? string.Empty;
 
-            if (msg.Contains(Preferences.winnerMessageMarker))
-            {
-                this.BeginInvoke(new MethodInvoker(() =>
-                {
-                    lblWinner.Text = msg.Replace(Preferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
-                }));
-            }
-
             this.BeginInvoke(new MethodInvoker(() =>
             {
+                if (msg.Contains(Preferences.winnerMessageMarker))
+                {
+                    lblWinner.Text = msg.Replace(Preferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
+                }
                 rtbConsoleOutput.AppendText(msg + Environment.NewLine);
             }));
+        }
+
+        private static void StopProcess(Process p, bool running)
+        {
+            if(running && p!= null && !p.HasExited)
+            {
+                if (p.Responding)
+                {
+                    p.CloseMainWindow();
+                }
+                else
+                {
+                    p.Kill();
+                }
+            }
+        }
+
+        private void CombatSimulatorExited(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                EnableDisableReplayButtons(true);
+                combatSimulatorRunning = false;
+            }));
+        }
+
+        private void ReplayPlayerExited(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                replayPlayerRunning = false;
+            }));
+        }
+
+        private void EnableDisableReplayButtons(bool enable)
+        {
+            btnSaveReplay.Enabled = enable;
+            btnCopyReplayPath.Enabled = enable;
+            btnOpenPlayer.Enabled = enable;
+
         }
 
         private void btnRunBattleSimulation_Click(object sender, EventArgs e)
@@ -67,25 +105,31 @@ namespace YololFleetsGUI
             {
                 try
                 {
-                    combatSimulator?.Kill();
+                    EnableDisableReplayButtons(false);
+
+                    StopProcess(combatSimulator, combatSimulatorRunning);
 
                     combatSimulator = new Process();
                     combatSimulator.StartInfo.FileName = simulatorPath;
                     combatSimulator.StartInfo.Arguments = $"-a {Fleet1Browser.SelectedPath} -b {Fleet2Browser.SelectedPath} -o {Preferences.current.DefaultReplayPath}";
                     combatSimulator.StartInfo.RedirectStandardOutput = true;
                     combatSimulator.StartInfo.CreateNoWindow = true;
+                    combatSimulator.EnableRaisingEvents = true;
 
                     combatSimulator.OutputDataReceived += new DataReceivedEventHandler(SimulationOutputHandler);
+                    combatSimulator.Exited += new EventHandler(CombatSimulatorExited);
 
-                    combatSimulator.Start();
-
+                    combatSimulatorRunning = combatSimulator.Start();
                     combatSimulator.BeginOutputReadLine();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error occured while simulating the battle:{Environment.NewLine}{ex.Message}");
+                    if (combatSimulatorRunning)
+                    {
+                        combatSimulator?.Kill();
+                    }
 
-                    combatSimulator?.Kill();
+                    MessageBox.Show($"An error occured while simulating the battle:{Environment.NewLine}{ex.Message}");
                 }
             }
             else
@@ -141,18 +185,24 @@ namespace YololFleetsGUI
             {
                 try
                 {
-                    replayPlayer?.CloseMainWindow();
+                    StopProcess(replayPlayer, replayPlayerRunning);
 
                     replayPlayer = new Process();
                     replayPlayer.StartInfo.FileName = playerPath;
+                    replayPlayer.EnableRaisingEvents = true;
 
-                    replayPlayer.Start();
+                    replayPlayer.Exited += new EventHandler(ReplayPlayerExited);
+
+                    replayPlayerRunning = replayPlayer.Start();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"An error has occured while trying to open the replay player:{Environment.NewLine}{ex.Message}");
+                    if (replayPlayerRunning)
+                    {
+                        replayPlayer?.Kill();
+                    }
 
-                    replayPlayer?.Kill();
+                    MessageBox.Show($"An error has occured while trying to open the replay player:{Environment.NewLine}{ex.Message}");
                 }
             }
             else
@@ -163,8 +213,8 @@ namespace YololFleetsGUI
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
-            combatSimulator?.Kill();
-            replayPlayer?.Kill();
+            StopProcess(combatSimulator, combatSimulatorRunning);
+            StopProcess(replayPlayer, replayPlayerRunning);
         }
     }
 }

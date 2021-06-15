@@ -104,6 +104,7 @@ namespace YololFleetsGUI
             // 
             // btnSaveReplay
             // 
+            this.btnSaveReplay.Enabled = false;
             this.btnSaveReplay.Location = new System.Drawing.Point(93, 119);
             this.btnSaveReplay.Name = "btnSaveReplay";
             this.btnSaveReplay.Size = new System.Drawing.Size(88, 23);
@@ -144,6 +145,7 @@ namespace YololFleetsGUI
             // 
             // btnCopyReplayPath
             // 
+            this.btnCopyReplayPath.Enabled = false;
             this.btnCopyReplayPath.Location = new System.Drawing.Point(187, 119);
             this.btnCopyReplayPath.Name = "btnCopyReplayPath";
             this.btnCopyReplayPath.Size = new System.Drawing.Size(112, 23);
@@ -154,6 +156,7 @@ namespace YololFleetsGUI
             // 
             // btnOpenPlayer
             // 
+            this.btnOpenPlayer.Enabled = false;
             this.btnOpenPlayer.Location = new System.Drawing.Point(305, 119);
             this.btnOpenPlayer.Name = "btnOpenPlayer";
             this.btnOpenPlayer.Size = new System.Drawing.Size(84, 23);
