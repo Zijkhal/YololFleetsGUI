@@ -17,12 +17,14 @@ namespace YololFleetsGUI
         public static readonly string playerFileName = "SaturnsEnvy.exe";
         public static readonly string settingsFileName = "settings.json";
         public static readonly string defaultReplayFileName = "replay.json.deflate";
-        public static readonly string winnerMessagePrefix = "Winner:";
+        public static readonly string winnerMessageMarker = " (VictoryMarker)";
 
         [JsonIgnore]
         public string CombatSimulatorFilePath { get { string path = $@"{CombatSimulatorPath}\{combatSimulatorFileName}"; return File.Exists(path) ? path : string.Empty; } }
         [JsonIgnore]
         public string ReplayPlayerFilePath { get { string path = $@"{PlayerPath}\{playerFileName}"; return File.Exists(path) ? path : string.Empty; } }
+        [JsonIgnore]
+        public string DefaultReplayPath { get { return $@"{CombatSimulatorPath}\{defaultReplayFileName}"; } }
 
         public string CombatSimulatorPath { get; set; }
         public string PlayerPath { get; set; }
