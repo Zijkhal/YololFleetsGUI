@@ -1,6 +1,6 @@
 # Yolol Fleets GUI
 
-This is a simple GUI for the [Saturn's Envy](https://github.com/martindevans/Yolol-SpaceShipCombatSimulator) game created by [Yolathothep](https://github.com/martindevans). It provides a GUI to select the fleets to battle against each other, as well as options to save the generated replay, and open the [Replay Player](https://github.com/martindevans/Yolol-SpaceCombatPlayer) to view the battle.
+This is a simple GUI for the [Saturn's Envy](https://github.com/martindevans/Yolol-SpaceShipCombatSimulator) game created by [Yolathothep](https://github.com/martindevans). It provides a GUI to select the fleets that battle against each other, as well as options to save the generated replay, and open the [Replay Player](https://github.com/martindevans/Yolol-SpaceCombatPlayer) to view the battle.
 
 ## How to use
 
