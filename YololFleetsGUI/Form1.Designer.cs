@@ -178,7 +178,7 @@ namespace YololFleetsGUI
             this.Controls.Add(this.tbFleet2);
             this.Controls.Add(this.tbFleet1);
             this.Name = "Form1";
-            this.Text = "Yolol Fleets Manager";
+            this.Text = "Yolol Fleets GUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
