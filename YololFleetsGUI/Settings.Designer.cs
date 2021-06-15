@@ -38,8 +38,12 @@ namespace YololFleetsGUI
             this.PlayerInstallationBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.lblSimulatorInstallationError = new System.Windows.Forms.Label();
             this.lblPlayerInstallationError = new System.Windows.Forms.Label();
-            this.lblSimulatorInstallationSetting = new System.Windows.Forms.Label();
-            this.lblPlayerInstallationPathSetting = new System.Windows.Forms.Label();
+            this.lblSimulatorInstallationTitle = new System.Windows.Forms.Label();
+            this.lblPlayerInstallationTitle = new System.Windows.Forms.Label();
+            this.lblDefaultReplaysFolderTitle = new System.Windows.Forms.Label();
+            this.lblDefaultReplayFolder = new System.Windows.Forms.Label();
+            this.btnSetDefaultReplayFolder = new System.Windows.Forms.Button();
+            this.DefaultReplayFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // btnSetSimulatorInstallationLocation
@@ -118,31 +122,63 @@ namespace YololFleetsGUI
             this.lblPlayerInstallationError.Size = new System.Drawing.Size(0, 15);
             this.lblPlayerInstallationError.TabIndex = 7;
             // 
-            // lblSimulatorInstallationSetting
+            // lblSimulatorInstallationTitle
             // 
-            this.lblSimulatorInstallationSetting.AutoSize = true;
-            this.lblSimulatorInstallationSetting.Location = new System.Drawing.Point(12, 9);
-            this.lblSimulatorInstallationSetting.Name = "lblSimulatorInstallationSetting";
-            this.lblSimulatorInstallationSetting.Size = new System.Drawing.Size(192, 15);
-            this.lblSimulatorInstallationSetting.TabIndex = 8;
-            this.lblSimulatorInstallationSetting.Text = "Combat Simulator installation path";
+            this.lblSimulatorInstallationTitle.AutoSize = true;
+            this.lblSimulatorInstallationTitle.Location = new System.Drawing.Point(12, 9);
+            this.lblSimulatorInstallationTitle.Name = "lblSimulatorInstallationTitle";
+            this.lblSimulatorInstallationTitle.Size = new System.Drawing.Size(192, 15);
+            this.lblSimulatorInstallationTitle.TabIndex = 8;
+            this.lblSimulatorInstallationTitle.Text = "Combat Simulator installation path";
             // 
-            // lblPlayerInstallationPathSetting
+            // lblPlayerInstallationTitle
             // 
-            this.lblPlayerInstallationPathSetting.AutoSize = true;
-            this.lblPlayerInstallationPathSetting.Location = new System.Drawing.Point(12, 62);
-            this.lblPlayerInstallationPathSetting.Name = "lblPlayerInstallationPathSetting";
-            this.lblPlayerInstallationPathSetting.Size = new System.Drawing.Size(165, 15);
-            this.lblPlayerInstallationPathSetting.TabIndex = 9;
-            this.lblPlayerInstallationPathSetting.Text = "Replay Player installation path";
+            this.lblPlayerInstallationTitle.AutoSize = true;
+            this.lblPlayerInstallationTitle.Location = new System.Drawing.Point(12, 62);
+            this.lblPlayerInstallationTitle.Name = "lblPlayerInstallationTitle";
+            this.lblPlayerInstallationTitle.Size = new System.Drawing.Size(165, 15);
+            this.lblPlayerInstallationTitle.TabIndex = 9;
+            this.lblPlayerInstallationTitle.Text = "Replay Player installation path";
+            // 
+            // lblDefaultReplaysFolderTitle
+            // 
+            this.lblDefaultReplaysFolderTitle.AutoSize = true;
+            this.lblDefaultReplaysFolderTitle.Location = new System.Drawing.Point(12, 115);
+            this.lblDefaultReplaysFolderTitle.Name = "lblDefaultReplaysFolderTitle";
+            this.lblDefaultReplaysFolderTitle.Size = new System.Drawing.Size(124, 15);
+            this.lblDefaultReplaysFolderTitle.TabIndex = 13;
+            this.lblDefaultReplaysFolderTitle.Text = "Default Replays Folder";
+            // 
+            // lblDefaultReplayFolder
+            // 
+            this.lblDefaultReplayFolder.AutoSize = true;
+            this.lblDefaultReplayFolder.ForeColor = System.Drawing.Color.Gray;
+            this.lblDefaultReplayFolder.Location = new System.Drawing.Point(94, 137);
+            this.lblDefaultReplayFolder.Name = "lblDefaultReplayFolder";
+            this.lblDefaultReplayFolder.Size = new System.Drawing.Size(38, 15);
+            this.lblDefaultReplayFolder.TabIndex = 11;
+            this.lblDefaultReplayFolder.Text = "label1";
+            // 
+            // btnSetDefaultReplayFolder
+            // 
+            this.btnSetDefaultReplayFolder.Location = new System.Drawing.Point(13, 133);
+            this.btnSetDefaultReplayFolder.Name = "btnSetDefaultReplayFolder";
+            this.btnSetDefaultReplayFolder.Size = new System.Drawing.Size(75, 23);
+            this.btnSetDefaultReplayFolder.TabIndex = 10;
+            this.btnSetDefaultReplayFolder.Text = "Browse";
+            this.btnSetDefaultReplayFolder.UseVisualStyleBackColor = true;
+            this.btnSetDefaultReplayFolder.Click += new System.EventHandler(this.btnSetDefaultReplayFolder_Click);
             // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.lblPlayerInstallationPathSetting);
-            this.Controls.Add(this.lblSimulatorInstallationSetting);
+            this.Controls.Add(this.lblDefaultReplaysFolderTitle);
+            this.Controls.Add(this.lblDefaultReplayFolder);
+            this.Controls.Add(this.btnSetDefaultReplayFolder);
+            this.Controls.Add(this.lblPlayerInstallationTitle);
+            this.Controls.Add(this.lblSimulatorInstallationTitle);
             this.Controls.Add(this.lblPlayerInstallationError);
             this.Controls.Add(this.lblSimulatorInstallationError);
             this.Controls.Add(this.lblPlayerInstallation);
@@ -167,7 +203,11 @@ namespace YololFleetsGUI
         private System.Windows.Forms.FolderBrowserDialog PlayerInstallationBrowser;
         private System.Windows.Forms.Label lblSimulatorInstallationError;
         private System.Windows.Forms.Label lblPlayerInstallationError;
-        private System.Windows.Forms.Label lblSimulatorInstallationSetting;
-        private System.Windows.Forms.Label lblPlayerInstallationPathSetting;
+        private System.Windows.Forms.Label lblSimulatorInstallationTitle;
+        private System.Windows.Forms.Label lblPlayerInstallationTitle;
+        private System.Windows.Forms.Label lblDefaultReplaysFolderTitle;
+        private System.Windows.Forms.Label lblDefaultReplayFolder;
+        private System.Windows.Forms.Button btnSetDefaultReplayFolder;
+        private System.Windows.Forms.FolderBrowserDialog DefaultReplayFolderBrowser;
     }
 }

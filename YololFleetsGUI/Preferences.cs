@@ -12,43 +12,30 @@ namespace YololFleetsGUI
         public static readonly string playerFileName = "SaturnsEnvy.exe";
         public static readonly string settingsFileName = "settings.json";
         public static readonly string defaultReplayFileName = "replay.json.deflate";
+        public static string ReplayFileExtension { get { return Path.GetExtension(defaultReplayFileName); } }
         public static readonly string winnerMessageMarker = " (VictoryMarker)";
+        public static readonly string captainsLogAFileName = "CaptainsLog_A.txt";
+        public static readonly string captainsLogBFileName = "CaptainsLog_B.txt";
 
         [JsonIgnore]
-        public string CombatSimulatorFilePath { get { return $@"{CombatSimulatorPath}\{combatSimulatorFileName}"; } }
+        public string CombatSimulatorFilePath { get { return Path.Combine(CombatSimulatorPath, combatSimulatorFileName); } }
         [JsonIgnore]
-        public string ReplayPlayerFilePath { get { return $@"{PlayerPath}\{playerFileName}"; } }
+        public string ReplayPlayerFilePath { get { return Path.Combine(PlayerPath, playerFileName); } }
         [JsonIgnore]
-        public string DefaultReplayPath { get { return $@"{CombatSimulatorPath}\{defaultReplayFileName}"; } }
+        public string DefaultReplayPath { get { return Path.Combine(CombatSimulatorPath, defaultReplayFileName); } }
 
         public string CombatSimulatorPath { get; set; }
         public string PlayerPath { get; set; }
+        public string DefaultReplayFolder
+        {
+            get { return (defaultReplayFolder ?? string.Empty) != string.Empty ? defaultReplayFolder : Path.Combine(Directory.GetCurrentDirectory(), "Replays"); }
+            set { defaultReplayFolder = value ?? string.Empty; }
+        }
+        private string defaultReplayFolder = string.Empty;
 
         static Preferences()
         {
             current = File.Exists(settingsFileName) ? JsonSerializer.Deserialize<Preferences>(File.ReadAllText(settingsFileName)) : new Preferences();
-        }
-
-        public bool SetCombatSimulatorPath (string path)
-        {
-            bool validPath = File.Exists($@"{path}\{combatSimulatorFileName}");
-
-            if (validPath)
-            {
-                CombatSimulatorPath = path;
-            }
-            return validPath;
-        }
-
-        public bool SetReplayPayerPath(string path)
-        {
-            bool validPath = File.Exists($@"{path}\{playerFileName}");
-
-            if (validPath)
-            {
-                PlayerPath = path;
-            }
-            return validPath;
         }
     }
 }

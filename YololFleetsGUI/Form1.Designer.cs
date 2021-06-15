@@ -38,9 +38,9 @@ namespace YololFleetsGUI
             this.btnSaveReplay = new System.Windows.Forms.Button();
             this.rtbConsoleOutput = new System.Windows.Forms.RichTextBox();
             this.lblWinner = new System.Windows.Forms.Label();
-            this.saveReplayDialog = new System.Windows.Forms.SaveFileDialog();
             this.btnCopyReplayPath = new System.Windows.Forms.Button();
             this.btnOpenPlayer = new System.Windows.Forms.Button();
+            this.saveReplayDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
             // tbFleet1
@@ -54,6 +54,7 @@ namespace YololFleetsGUI
             this.tbFleet1.ReadOnly = true;
             this.tbFleet1.Size = new System.Drawing.Size(481, 23);
             this.tbFleet1.TabIndex = 1;
+            this.tbFleet1.TabStop = false;
             this.tbFleet1.Text = "Click here to select a fleet";
             this.tbFleet1.Click += new System.EventHandler(this.tbFleet1_Click);
             // 
@@ -68,6 +69,7 @@ namespace YololFleetsGUI
             this.tbFleet2.ReadOnly = true;
             this.tbFleet2.Size = new System.Drawing.Size(481, 23);
             this.tbFleet2.TabIndex = 3;
+            this.tbFleet2.TabStop = false;
             this.tbFleet2.Text = "Click here to select a fleet";
             this.tbFleet2.Click += new System.EventHandler(this.tbFleet2_Click);
             // 
@@ -97,7 +99,7 @@ namespace YololFleetsGUI
             this.btnSettings.Location = new System.Drawing.Point(12, 12);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(75, 23);
-            this.btnSettings.TabIndex = 5;
+            this.btnSettings.TabIndex = 0;
             this.btnSettings.Text = "Settings";
             this.btnSettings.UseVisualStyleBackColor = true;
             this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
@@ -107,9 +109,9 @@ namespace YololFleetsGUI
             this.btnSaveReplay.Enabled = false;
             this.btnSaveReplay.Location = new System.Drawing.Point(93, 119);
             this.btnSaveReplay.Name = "btnSaveReplay";
-            this.btnSaveReplay.Size = new System.Drawing.Size(88, 23);
+            this.btnSaveReplay.Size = new System.Drawing.Size(94, 23);
             this.btnSaveReplay.TabIndex = 6;
-            this.btnSaveReplay.Text = "Save Replay";
+            this.btnSaveReplay.Text = "Save Replay As";
             this.btnSaveReplay.UseVisualStyleBackColor = true;
             this.btnSaveReplay.Click += new System.EventHandler(this.btnSaveReplay_Click);
             // 
@@ -124,7 +126,7 @@ namespace YololFleetsGUI
             this.rtbConsoleOutput.ReadOnly = true;
             this.rtbConsoleOutput.ShowSelectionMargin = true;
             this.rtbConsoleOutput.Size = new System.Drawing.Size(481, 420);
-            this.rtbConsoleOutput.TabIndex = 7;
+            this.rtbConsoleOutput.TabIndex = 99;
             this.rtbConsoleOutput.Text = "";
             // 
             // lblWinner
@@ -137,16 +139,10 @@ namespace YololFleetsGUI
             this.lblWinner.TabIndex = 8;
             this.lblWinner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // saveReplayDialog
-            // 
-            this.saveReplayDialog.AddExtension = false;
-            this.saveReplayDialog.DefaultExt = "json.deflate";
-            this.saveReplayDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.saveReplayDialog_FileOk);
-            // 
             // btnCopyReplayPath
             // 
             this.btnCopyReplayPath.Enabled = false;
-            this.btnCopyReplayPath.Location = new System.Drawing.Point(187, 119);
+            this.btnCopyReplayPath.Location = new System.Drawing.Point(193, 119);
             this.btnCopyReplayPath.Name = "btnCopyReplayPath";
             this.btnCopyReplayPath.Size = new System.Drawing.Size(112, 23);
             this.btnCopyReplayPath.TabIndex = 9;
@@ -157,13 +153,17 @@ namespace YololFleetsGUI
             // btnOpenPlayer
             // 
             this.btnOpenPlayer.Enabled = false;
-            this.btnOpenPlayer.Location = new System.Drawing.Point(305, 119);
+            this.btnOpenPlayer.Location = new System.Drawing.Point(311, 119);
             this.btnOpenPlayer.Name = "btnOpenPlayer";
             this.btnOpenPlayer.Size = new System.Drawing.Size(84, 23);
             this.btnOpenPlayer.TabIndex = 10;
             this.btnOpenPlayer.Text = "Open Player";
             this.btnOpenPlayer.UseVisualStyleBackColor = true;
             this.btnOpenPlayer.Click += new System.EventHandler(this.btnOpenPlayer_Click);
+            // 
+            // saveReplayDialog
+            // 
+            this.saveReplayDialog.Description = "Select the folder to save the replay files to";
             // 
             // Form1
             // 
@@ -198,9 +198,9 @@ namespace YololFleetsGUI
         private System.Windows.Forms.Button btnSaveReplay;
         private System.Windows.Forms.RichTextBox rtbConsoleOutput;
         private System.Windows.Forms.Label lblWinner;
-        private System.Windows.Forms.SaveFileDialog saveReplayDialog;
         private System.Windows.Forms.Button btnCopyReplayPath;
         private System.Windows.Forms.Button btnOpenPlayer;
+        private System.Windows.Forms.FolderBrowserDialog saveReplayDialog;
     }
 }
 

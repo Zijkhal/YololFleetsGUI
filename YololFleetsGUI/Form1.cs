@@ -16,11 +16,14 @@ namespace YololFleetsGUI
         private bool combatSimulatorRunning = false;
         private bool replayPlayerRunning = false;
 
+        private string latestReplayPath = string.Empty;
+
         public Form1()
         {
             InitializeComponent();
         }
 
+        #region Control Events
         private void tbFleet1_Click(object sender, EventArgs e)
         {
             Fleet1Browser.ShowDialog();
@@ -41,70 +44,18 @@ namespace YololFleetsGUI
             btnRunBattleSimulation.Enabled = fleet1Selected && fleet2Selected;
         }
 
-        private void SimulationOutputHandler(object sender, DataReceivedEventArgs e)
-        {
-            string msg = e.Data ?? string.Empty;
-
-            this.BeginInvoke(new MethodInvoker(() =>
-            {
-                if (msg.Contains(Preferences.winnerMessageMarker))
-                {
-                    lblWinner.Text = msg.Replace(Preferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
-                }
-                rtbConsoleOutput.AppendText(msg + Environment.NewLine);
-            }));
-        }
-
-        private static void StopProcess(Process p, bool running)
-        {
-            if(running && p!= null && !p.HasExited)
-            {
-                if (p.Responding)
-                {
-                    p.CloseMainWindow();
-                }
-                else
-                {
-                    p.Kill();
-                }
-            }
-        }
-
-        private void CombatSimulatorExited(object sender, EventArgs e)
-        {
-            this.BeginInvoke(new MethodInvoker(() =>
-            {
-                EnableDisableReplayButtons(true);
-                combatSimulatorRunning = false;
-            }));
-        }
-
-        private void ReplayPlayerExited(object sender, EventArgs e)
-        {
-            this.BeginInvoke(new MethodInvoker(() =>
-            {
-                replayPlayerRunning = false;
-            }));
-        }
-
-        private void EnableDisableReplayButtons(bool enable)
-        {
-            btnSaveReplay.Enabled = enable;
-            btnCopyReplayPath.Enabled = enable;
-            btnOpenPlayer.Enabled = enable;
-
-        }
-
         private void btnRunBattleSimulation_Click(object sender, EventArgs e)
         {
             lblWinner.Text = string.Empty;
 
             string simulatorPath = Preferences.current.CombatSimulatorFilePath;
 
-            if(File.Exists(simulatorPath))
+            if (File.Exists(simulatorPath))
             {
                 try
                 {
+                    btnRunBattleSimulation.Enabled = false;
+
                     EnableDisableReplayButtons(false);
 
                     StopProcess(combatSimulator, combatSimulatorRunning);
@@ -130,6 +81,8 @@ namespace YololFleetsGUI
                     }
 
                     MessageBox.Show($"An error occured while simulating the battle:{Environment.NewLine}{ex.Message}");
+
+                    btnRunBattleSimulation.Enabled = true;
                 }
             }
             else
@@ -149,39 +102,43 @@ namespace YololFleetsGUI
 
         private void btnSaveReplay_Click(object sender, EventArgs e)
         {
-            if (File.Exists(Preferences.current.DefaultReplayPath))
+            try
             {
-                saveReplayDialog.ShowDialog();
+                string replayFilePath = Path.Combine(latestReplayPath, Preferences.defaultReplayFileName);
+                if (Directory.Exists(latestReplayPath))
+                {
+                    saveReplayDialog.ShowDialog();
 
-                File.Copy(Preferences.current.DefaultReplayPath, saveReplayDialog.FileName);
+                    DirectoryInfo dir = new DirectoryInfo(latestReplayPath);
 
-                saveReplayDialog.FileName = string.Empty;
+                    FileInfo[] files = dir.GetFiles();
+
+                    foreach(FileInfo file in files)
+                    {
+                        file.CopyTo(Path.Combine(saveReplayDialog.SelectedPath, file.Name));
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("replay not found");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("replay not found");
-            }
-        }
-
-        private void saveReplayDialog_FileOk(object sender, CancelEventArgs e)
-        {
-            if (!saveReplayDialog.FileName.EndsWith(saveReplayDialog.DefaultExt))
-            {
-                MessageBox.Show($"The replay file must have the extension {saveReplayDialog.DefaultExt}");
-                e.Cancel = true;
+                MessageBox.Show($"An error has occured while trying to save the replay:{Environment.NewLine}{ex.Message}");
             }
         }
 
         private void btnCopyReplayPath_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(Preferences.current.DefaultReplayPath);
+            Clipboard.SetText(Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
         }
 
         private void btnOpenPlayer_Click(object sender, EventArgs e)
         {
             string playerPath = Preferences.current.ReplayPlayerFilePath;
 
-            if(File.Exists(playerPath))
+            if (File.Exists(playerPath))
             {
                 try
                 {
@@ -210,11 +167,103 @@ namespace YololFleetsGUI
                 MessageBox.Show("Replay player not found, go to settings to specify its location!");
             }
         }
+        #endregion
+
+        #region Helper functions
+        private static void StopProcess(Process p, bool running)
+        {
+            if(running && p!= null && !p.HasExited)
+            {
+                if (p.Responding)
+                {
+                    p.CloseMainWindow();
+                }
+                else
+                {
+                    p.Kill();
+                }
+            }
+        }
+
+        private void EnableDisableReplayButtons(bool enable)
+        {
+            btnSaveReplay.Enabled = enable;
+            btnCopyReplayPath.Enabled = enable;
+            btnOpenPlayer.Enabled = enable;
+
+        }
+
+        private static string DateTimeToString (DateTime dt)
+        {
+            return $"{dt.Year}-{dt.Month:00}-{dt.Day:00}_{dt.Hour:00}-{dt.Minute:00}-{dt.Second:00}";
+        }
+
+        private void SaveTempReplayToDefaultReplayFolder()
+        {
+            try
+            {
+                string fleet1Name = Path.GetFileNameWithoutExtension(tbFleet1.Text);
+                string fleet2Name = Path.GetFileNameWithoutExtension(tbFleet2.Text);
+
+                latestReplayPath = Path.Combine(Preferences.current.DefaultReplayFolder, $"{DateTimeToString(DateTime.Now)}_{fleet1Name}_vs_{fleet2Name}");
+                Directory.CreateDirectory(latestReplayPath);
+
+                string workingDirectory = Directory.GetCurrentDirectory();
+
+                File.Copy(Path.Combine(workingDirectory, Preferences.captainsLogAFileName), Path.Combine(latestReplayPath, $"CaptainsLog_A_{fleet1Name}.txt"));
+
+                File.Copy(Path.Combine(workingDirectory, Preferences.captainsLogBFileName), Path.Combine(latestReplayPath, $"CaptainsLog_B_{fleet2Name}.txt"));
+
+                File.Copy(Preferences.current.DefaultReplayPath, Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error has occured while saving the replay:{Environment.NewLine}{ex.Message}");
+            }
+        }
+        #endregion
+
+        #region Process Event Handlers
+        private void SimulationOutputHandler(object sender, DataReceivedEventArgs e)
+        {
+            string msg = e.Data ?? string.Empty;
+
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                if (msg.Contains(Preferences.winnerMessageMarker))
+                {
+                    lblWinner.Text = msg.Replace(Preferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
+                }
+                rtbConsoleOutput.AppendText(msg + Environment.NewLine);
+            }));
+        }
+
+        private void CombatSimulatorExited(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                EnableDisableReplayButtons(true);
+                combatSimulatorRunning = false;
+
+                SaveTempReplayToDefaultReplayFolder();
+
+                btnRunBattleSimulation.Enabled = true;
+            }));
+        }
+
+        private void ReplayPlayerExited(object sender, EventArgs e)
+        {
+            this.BeginInvoke(new MethodInvoker(() =>
+            {
+                replayPlayerRunning = false;
+            }));
+        }
+        #endregion
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopProcess(combatSimulator, combatSimulatorRunning);
-            StopProcess(replayPlayer, replayPlayerRunning);
+            //StopProcess(replayPlayer, replayPlayerRunning);
         }
     }
 }
