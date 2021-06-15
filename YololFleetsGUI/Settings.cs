@@ -18,8 +18,8 @@ namespace YololFleetsGUI
         {
             InitializeComponent();
 
-            lblSimulatorInstallation.Text = Preferences.current.CombatSimulatorFilePath;
-            lblPlayerInstallation.Text = Preferences.current.ReplayPlayerFilePath;
+            lblSimulatorInstallation.Text = File.Exists(Preferences.current.CombatSimulatorFilePath) ? Preferences.current.CombatSimulatorFilePath : string.Empty;
+            lblPlayerInstallation.Text = File.Exists(Preferences.current.ReplayPlayerFilePath) ? Preferences.current.ReplayPlayerFilePath : string.Empty;
         }
 
         private void btnSetSimulatorInstallationLocation_Click(object sender, EventArgs e)

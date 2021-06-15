@@ -69,7 +69,7 @@ namespace YololFleetsGUI
 
             string simulatorPath = Preferences.current.CombatSimulatorFilePath;
 
-            if(simulatorPath != string.Empty)
+            if(File.Exists(simulatorPath))
             {
                 try
                 {
@@ -143,11 +143,11 @@ namespace YololFleetsGUI
         {
             string playerPath = Preferences.current.ReplayPlayerFilePath;
 
-            if(playerPath != string.Empty)
+            if(File.Exists(playerPath))
             {
                 try
                 {
-                    replayPlayer?.Kill();
+                    replayPlayer?.CloseMainWindow();
 
                     replayPlayer = new Process();
                     replayPlayer.StartInfo.FileName = playerPath;
@@ -157,6 +157,8 @@ namespace YololFleetsGUI
                 catch (Exception ex)
                 {
                     MessageBox.Show($"An error has occured while trying to open the replay player:{Environment.NewLine}{ex.Message}");
+
+                    replayPlayer?.Kill();
                 }
             }
             else

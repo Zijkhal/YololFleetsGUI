@@ -20,9 +20,9 @@ namespace YololFleetsGUI
         public static readonly string winnerMessageMarker = " (VictoryMarker)";
 
         [JsonIgnore]
-        public string CombatSimulatorFilePath { get { string path = $@"{CombatSimulatorPath}\{combatSimulatorFileName}"; return File.Exists(path) ? path : string.Empty; } }
+        public string CombatSimulatorFilePath { get { return $@"{CombatSimulatorPath}\{combatSimulatorFileName}"; } }
         [JsonIgnore]
-        public string ReplayPlayerFilePath { get { string path = $@"{PlayerPath}\{playerFileName}"; return File.Exists(path) ? path : string.Empty; } }
+        public string ReplayPlayerFilePath { get { return $@"{PlayerPath}\{playerFileName}"; } }
         [JsonIgnore]
         public string DefaultReplayPath { get { return $@"{CombatSimulatorPath}\{defaultReplayFileName}"; } }
 
