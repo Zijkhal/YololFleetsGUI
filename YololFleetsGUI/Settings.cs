@@ -10,10 +10,6 @@ namespace YololFleetsGUI
         public Settings()
         {
             InitializeComponent();
-
-            lblSimulatorInstallation.Text = File.Exists(Preferences.current.CombatSimulatorFilePath) ? Preferences.current.CombatSimulatorFilePath : string.Empty;
-            lblPlayerInstallation.Text = File.Exists(Preferences.current.ReplayPlayerFilePath) ? Preferences.current.ReplayPlayerFilePath : string.Empty;
-            lblDefaultReplayFolder.Text = Preferences.current.DefaultReplayFolder;
         }
 
         #region Control Events
@@ -68,6 +64,13 @@ namespace YololFleetsGUI
             DefaultReplayFolderBrowser.ShowDialog();
 
             lblDefaultReplayFolder.Text = DefaultReplayFolderBrowser.SelectedPath;
+        }
+
+        private void Settings_Load(object sender, EventArgs e)
+        {
+            lblSimulatorInstallation.Text = File.Exists(Preferences.current.CombatSimulatorFilePath) ? Preferences.current.CombatSimulatorFilePath : string.Empty;
+            lblPlayerInstallation.Text = File.Exists(Preferences.current.ReplayPlayerFilePath) ? Preferences.current.ReplayPlayerFilePath : string.Empty;
+            lblDefaultReplayFolder.Text = Preferences.current.DefaultReplayFolder;
         }
     }
 }

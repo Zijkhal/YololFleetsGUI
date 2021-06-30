@@ -62,7 +62,7 @@ namespace YololFleetsGUI
 
                     combatSimulator = new Process();
                     combatSimulator.StartInfo.FileName = simulatorPath;
-                    combatSimulator.StartInfo.Arguments = $"-a {Fleet1Browser.SelectedPath} -b {Fleet2Browser.SelectedPath} -o {Preferences.current.DefaultReplayPath}";
+                    combatSimulator.StartInfo.Arguments = $"-a {Fleet1Browser.SelectedPath} -b {Fleet2Browser.SelectedPath}";
                     combatSimulator.StartInfo.RedirectStandardOutput = true;
                     combatSimulator.StartInfo.CreateNoWindow = true;
                     combatSimulator.EnableRaisingEvents = true;
@@ -100,7 +100,8 @@ namespace YololFleetsGUI
             settings.Focus();
         }
 
-        private void btnSaveReplay_Click(object sender, EventArgs e)
+        //no longer used
+        /*private void btnSaveReplay_Click(object sender, EventArgs e)
         {
             try
             {
@@ -127,7 +128,7 @@ namespace YololFleetsGUI
             {
                 MessageBox.Show($"An error has occured while trying to save the replay:{Environment.NewLine}{ex.Message}");
             }
-        }
+        }*/
 
         private void btnCopyReplayPath_Click(object sender, EventArgs e)
         {
@@ -187,7 +188,7 @@ namespace YololFleetsGUI
 
         private void EnableDisableReplayButtons(bool enable)
         {
-            btnSaveReplay.Enabled = enable;
+            //btnSaveReplay.Enabled = enable;
             btnCopyReplayPath.Enabled = enable;
             btnOpenPlayer.Enabled = enable;
 
@@ -214,7 +215,7 @@ namespace YololFleetsGUI
 
                 File.Copy(Path.Combine(workingDirectory, Preferences.captainsLogBFileName), Path.Combine(latestReplayPath, $"CaptainsLog_B_{fleet2Name}.txt"));
 
-                File.Copy(Preferences.current.DefaultReplayPath, Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
+                File.Copy(Path.Combine(workingDirectory, Preferences.replayFileName), Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
             }
             catch (Exception ex)
             {
