@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v5.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v5.0": {
+      "YololFleetsGUI/1.0.0": {
+        "runtime": {
+          "YololFleetsGUI.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "YololFleetsGUI/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

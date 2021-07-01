@@ -10,18 +10,18 @@ namespace YololFleetsGUI
         public Settings()
         {
             InitializeComponent();
-
-            lblSimulatorInstallation.Text = File.Exists(Preferences.current.CombatSimulatorFilePath) ? Preferences.current.CombatSimulatorFilePath : string.Empty;
-            lblPlayerInstallation.Text = File.Exists(Preferences.current.ReplayPlayerFilePath) ? Preferences.current.ReplayPlayerFilePath : string.Empty;
         }
 
+        #region Control Events
         private void btnSetSimulatorInstallationLocation_Click(object sender, EventArgs e)
         {
             SimulatorInstallationBrowser.ShowDialog();
 
-            if (Preferences.current.SetCombatSimulatorPath(SimulatorInstallationBrowser.SelectedPath))
+            string path = Path.Combine(SimulatorInstallationBrowser.SelectedPath, Preferences.combatSimulatorFileName);
+
+            if (File.Exists(path))
             {
-                lblSimulatorInstallation.Text = Preferences.current.CombatSimulatorFilePath;
+                lblSimulatorInstallation.Text = path;
                 lblSimulatorInstallationError.Text = string.Empty;
             }
             else
@@ -34,9 +34,11 @@ namespace YololFleetsGUI
         {
             PlayerInstallationBrowser.ShowDialog();
 
-            if (Preferences.current.SetReplayPayerPath(PlayerInstallationBrowser.SelectedPath))
+            string path = Path.Combine(PlayerInstallationBrowser.SelectedPath, Preferences.playerFileName);
+
+            if (File.Exists(path))
             {
-                lblPlayerInstallation.Text = Preferences.current.ReplayPlayerFilePath;
+                lblPlayerInstallation.Text = path;
                 lblPlayerInstallationError.Text = string.Empty;
             }
             else
@@ -47,9 +49,28 @@ namespace YololFleetsGUI
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            Preferences.current.CombatSimulatorPath = Path.GetDirectoryName(lblSimulatorInstallation.Text);
+            Preferences.current.PlayerPath = Path.GetDirectoryName(lblPlayerInstallation.Text);
+            Preferences.current.DefaultReplayFolder = lblDefaultReplayFolder.Text;
+
             File.WriteAllText(Preferences.settingsFileName, JsonSerializer.Serialize(Preferences.current));
 
             this.Close();
+        }
+        #endregion
+
+        private void btnSetDefaultReplayFolder_Click(object sender, EventArgs e)
+        {
+            DefaultReplayFolderBrowser.ShowDialog();
+
+            lblDefaultReplayFolder.Text = DefaultReplayFolderBrowser.SelectedPath;
+        }
+
+        private void Settings_Load(object sender, EventArgs e)
+        {
+            lblSimulatorInstallation.Text = File.Exists(Preferences.current.CombatSimulatorFilePath) ? Preferences.current.CombatSimulatorFilePath : string.Empty;
+            lblPlayerInstallation.Text = File.Exists(Preferences.current.ReplayPlayerFilePath) ? Preferences.current.ReplayPlayerFilePath : string.Empty;
+            lblDefaultReplayFolder.Text = Preferences.current.DefaultReplayFolder;
         }
     }
 }
