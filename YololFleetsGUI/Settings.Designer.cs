@@ -44,6 +44,7 @@ namespace YololFleetsGUI
             this.lblDefaultReplayFolder = new System.Windows.Forms.Label();
             this.btnSetDefaultReplayFolder = new System.Windows.Forms.Button();
             this.DefaultReplayFolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnSetSimulatorInstallationLocation
@@ -173,11 +174,22 @@ namespace YololFleetsGUI
             this.btnSetDefaultReplayFolder.UseVisualStyleBackColor = true;
             this.btnSetDefaultReplayFolder.Click += new System.EventHandler(this.btnSetDefaultReplayFolder_Click);
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.ForeColor = System.Drawing.Color.DarkGray;
+            this.lblVersion.Location = new System.Drawing.Point(12, 571);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(72, 20);
+            this.lblVersion.TabIndex = 14;
+            this.lblVersion.Text = "Version: 2";
+            // 
             // Settings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(914, 600);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblDefaultReplaysFolderTitle);
             this.Controls.Add(this.lblDefaultReplayFolder);
             this.Controls.Add(this.btnSetDefaultReplayFolder);
@@ -215,5 +227,6 @@ namespace YololFleetsGUI
         private System.Windows.Forms.Label lblDefaultReplayFolder;
         private System.Windows.Forms.Button btnSetDefaultReplayFolder;
         private System.Windows.Forms.FolderBrowserDialog DefaultReplayFolderBrowser;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
