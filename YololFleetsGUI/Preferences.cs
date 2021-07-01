@@ -61,10 +61,5 @@ namespace YololFleetsGUI
         {
             current = File.Exists(settingsFileName) ? JsonSerializer.Deserialize<Preferences>(File.ReadAllText(settingsFileName)) : new Preferences();
         }
-
-        public Preferences()
-        {
-            SaveAllReplays = true;
-        }
     }
 }
