@@ -231,6 +231,10 @@ namespace YololFleetsGUI
 
             this.BeginInvoke(new MethodInvoker(() =>
             {
+                if(msg.Contains("Winner: Draw"))
+                {
+                    lblWinner.Text = "Draw";
+                }
                 if (msg.Contains(Preferences.winnerMessageMarker))
                 {
                     lblWinner.Text = msg.Replace(Preferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
