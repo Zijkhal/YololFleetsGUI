@@ -37,8 +37,7 @@ namespace YololFleetsGUI
             this.btnSettings = new System.Windows.Forms.Button();
             this.rtbConsoleOutput = new System.Windows.Forms.RichTextBox();
             this.lblWinner = new System.Windows.Forms.Label();
-            this.btnCopyReplayPath = new System.Windows.Forms.Button();
-            this.btnOpenPlayer = new System.Windows.Forms.Button();
+            this.btnWatchReplay = new System.Windows.Forms.Button();
             this.saveReplayDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.SuspendLayout();
             // 
@@ -133,29 +132,18 @@ namespace YololFleetsGUI
             this.lblWinner.TabIndex = 8;
             this.lblWinner.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // btnCopyReplayPath
+            // btnWatchReplay
             // 
-            this.btnCopyReplayPath.Enabled = false;
-            this.btnCopyReplayPath.Location = new System.Drawing.Point(106, 159);
-            this.btnCopyReplayPath.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnCopyReplayPath.Name = "btnCopyReplayPath";
-            this.btnCopyReplayPath.Size = new System.Drawing.Size(138, 31);
-            this.btnCopyReplayPath.TabIndex = 9;
-            this.btnCopyReplayPath.Text = "Copy Replay Path";
-            this.btnCopyReplayPath.UseVisualStyleBackColor = true;
-            this.btnCopyReplayPath.Click += new System.EventHandler(this.btnCopyReplayPath_Click);
-            // 
-            // btnOpenPlayer
-            // 
-            this.btnOpenPlayer.Enabled = false;
-            this.btnOpenPlayer.Location = new System.Drawing.Point(250, 159);
-            this.btnOpenPlayer.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.btnOpenPlayer.Name = "btnOpenPlayer";
-            this.btnOpenPlayer.Size = new System.Drawing.Size(106, 31);
-            this.btnOpenPlayer.TabIndex = 10;
-            this.btnOpenPlayer.Text = "Open Player";
-            this.btnOpenPlayer.UseVisualStyleBackColor = true;
-            this.btnOpenPlayer.Click += new System.EventHandler(this.btnOpenPlayer_Click);
+            this.btnWatchReplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnWatchReplay.Enabled = false;
+            this.btnWatchReplay.Location = new System.Drawing.Point(432, 159);
+            this.btnWatchReplay.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnWatchReplay.Name = "btnWatchReplay";
+            this.btnWatchReplay.Size = new System.Drawing.Size(131, 31);
+            this.btnWatchReplay.TabIndex = 10;
+            this.btnWatchReplay.Text = "Watch Replay";
+            this.btnWatchReplay.UseVisualStyleBackColor = true;
+            this.btnWatchReplay.Click += new System.EventHandler(this.btnWatchReplay_Click);
             // 
             // saveReplayDialog
             // 
@@ -167,8 +155,7 @@ namespace YololFleetsGUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(577, 773);
-            this.Controls.Add(this.btnOpenPlayer);
-            this.Controls.Add(this.btnCopyReplayPath);
+            this.Controls.Add(this.btnWatchReplay);
             this.Controls.Add(this.lblWinner);
             this.Controls.Add(this.rtbConsoleOutput);
             this.Controls.Add(this.btnSettings);
@@ -193,8 +180,7 @@ namespace YololFleetsGUI
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.RichTextBox rtbConsoleOutput;
         private System.Windows.Forms.Label lblWinner;
-        private System.Windows.Forms.Button btnCopyReplayPath;
-        private System.Windows.Forms.Button btnOpenPlayer;
+        private System.Windows.Forms.Button btnWatchReplay;
         private System.Windows.Forms.FolderBrowserDialog saveReplayDialog;
     }
 }

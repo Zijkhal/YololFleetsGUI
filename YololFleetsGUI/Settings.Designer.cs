@@ -182,7 +182,7 @@ namespace YololFleetsGUI
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(72, 20);
             this.lblVersion.TabIndex = 14;
-            this.lblVersion.Text = "Version: 2";
+            this.lblVersion.Text = "Version: 3";
             // 
             // Settings
             // 

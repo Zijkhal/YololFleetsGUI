@@ -56,7 +56,7 @@ namespace YololFleetsGUI
                 {
                     btnRunBattleSimulation.Enabled = false;
 
-                    EnableDisableReplayButtons(false);
+                    btnWatchReplay.Enabled = false;
 
                     StopProcess(combatSimulator, combatSimulatorRunning);
 
@@ -100,6 +100,7 @@ namespace YololFleetsGUI
             settings.Focus();
         }
 
+        #region deprecated
         //no longer used
         /*private void btnSaveReplay_Click(object sender, EventArgs e)
         {
@@ -130,12 +131,13 @@ namespace YololFleetsGUI
             }
         }*/
 
-        private void btnCopyReplayPath_Click(object sender, EventArgs e)
+        /*private void btnCopyReplayPath_Click(object sender, EventArgs e)
         {
             Clipboard.SetText(Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
-        }
+        }*/
+        #endregion
 
-        private void btnOpenPlayer_Click(object sender, EventArgs e)
+        private void btnWatchReplay_Click(object sender, EventArgs e)
         {
             string playerPath = Preferences.current.ReplayPlayerFilePath;
 
@@ -147,6 +149,7 @@ namespace YololFleetsGUI
 
                     replayPlayer = new Process();
                     replayPlayer.StartInfo.FileName = playerPath;
+                    replayPlayer.StartInfo.Arguments = Path.Combine(latestReplayPath, Preferences.defaultReplayFileName);
                     replayPlayer.EnableRaisingEvents = true;
 
                     replayPlayer.Exited += new EventHandler(ReplayPlayerExited);
@@ -184,14 +187,6 @@ namespace YololFleetsGUI
                     p.Kill();
                 }
             }
-        }
-
-        private void EnableDisableReplayButtons(bool enable)
-        {
-            //btnSaveReplay.Enabled = enable;
-            btnCopyReplayPath.Enabled = enable;
-            btnOpenPlayer.Enabled = enable;
-
         }
 
         private static string DateTimeToString (DateTime dt)
@@ -247,7 +242,7 @@ namespace YololFleetsGUI
         {
             this.BeginInvoke(new MethodInvoker(() =>
             {
-                EnableDisableReplayButtons(true);
+                btnWatchReplay.Enabled = true;
                 combatSimulatorRunning = false;
 
                 SaveTempReplayToDefaultReplayFolder();
