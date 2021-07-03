@@ -12,7 +12,7 @@ At first launch go to the settings, and select the folder where the [Combat Simu
 Optionally, select a folder where the replays of each battle will be saved. By default they are saved to the folder YololFleetsGUI is run from.
 
 ##### Running a Battle
-At the main window specify two fleets to battle each other, to do this, select the fleet's "Root Folder" as described in [Combat Simulator](https://github.com/martindevans/Yolol-SpaceShipCombatSimulator/blob/master/readme.md#Folder-Structure). When both fleets are selected, the "Simulate!" button becomes enabled. Press it to run the battle. While the battle simulator is running, the "Copy Replay Path" and "Open Player" buttons are disabled - they are enabled once the battle simulator has finished.
+At the main window specify two fleets to battle each other, to do this, select the fleet's "Root Folder" as described in [Combat Simulator](https://github.com/martindevans/Yolol-SpaceShipCombatSimulator/blob/master/readme.md#Folder-Structure). When both fleets are selected, the "Simulate!" button becomes enabled. Press it to run the battle. While the battle simulator is running, the "Watch Replay" button is disabled - it is enabled once the battle simulator has finished.
 
 ##### Viewing the Latest Replay
 After the battle has finished, press the "Watch Replay" button to view it in the [Replay Player](https://github.com/martindevans/Yolol-SpaceCombatPlayer).
