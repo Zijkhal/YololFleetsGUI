@@ -57,6 +57,10 @@ namespace YololFleetsGUI
         }
         private string defaultReplayFolder = string.Empty;
 
+        public long lastSimulatorReleaseID = 0;
+        public long lastPlayerReleaseID = 0;
+        public long lastGUIReleaseID = 0;
+
         static Preferences()
         {
             current = File.Exists(settingsFileName) ? JsonSerializer.Deserialize<Preferences>(File.ReadAllText(settingsFileName)) : new Preferences();
