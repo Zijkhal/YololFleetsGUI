@@ -24,22 +24,22 @@ namespace YololFleetsGUI
 
         private static readonly ProgramDetails simulatorDetails = new ProgramDetails(
             366504584L, 
-            Preferences.current.CombatSimulatorPath, 
-            Preferences.current.lastSimulatorReleaseID,
+            Program.preferences.CombatSimulatorPath,
+            Program.preferences.lastSimulatorReleaseID,
             "SpaceShipCombatSimulator.Win.zip",
             "SimulatorTemp"
         );
         private static readonly ProgramDetails playerDetails = new ProgramDetails(
             367688805L,
-            Preferences.current.PlayerPath,
-            Preferences.current.lastPlayerReleaseID,
+            Program.preferences.PlayerPath,
+            Program.preferences.lastPlayerReleaseID,
             "SpaceCombatPlayer.Win.zip",
             "PlayerTemp"
         );
         private static readonly ProgramDetails guiDetails = new ProgramDetails(
             376849707L,
             Directory.GetCurrentDirectory(),
-            Preferences.current.lastGUIReleaseID,
+            Program.preferences.lastGUIReleaseID,
             "YololFleetsGUI.Win.zip",
             "GUITemp"
         );

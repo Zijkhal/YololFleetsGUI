@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.IO;
 using System.Text.Json;
+using YololFleetsGUI.Preferences;
 
 namespace YololFleetsGUI
 {
@@ -17,7 +18,7 @@ namespace YololFleetsGUI
         {
             SimulatorInstallationBrowser.ShowDialog();
 
-            string path = Path.Combine(SimulatorInstallationBrowser.SelectedPath, Preferences.combatSimulatorFileName);
+            string path = Path.Combine(SimulatorInstallationBrowser.SelectedPath, UserPreferences.combatSimulatorFileName);
 
             if (File.Exists(path))
             {
@@ -26,7 +27,7 @@ namespace YololFleetsGUI
             }
             else
             {
-                lblSimulatorInstallationError.Text = $"The file {Preferences.combatSimulatorFileName} could not be found in the selected folder";
+                lblSimulatorInstallationError.Text = $"The file {UserPreferences.combatSimulatorFileName} could not be found in the selected folder";
             }
         }
 
@@ -34,7 +35,7 @@ namespace YololFleetsGUI
         {
             PlayerInstallationBrowser.ShowDialog();
 
-            string path = Path.Combine(PlayerInstallationBrowser.SelectedPath, Preferences.playerFileName);
+            string path = Path.Combine(PlayerInstallationBrowser.SelectedPath, UserPreferences.playerFileName);
 
             if (File.Exists(path))
             {
@@ -43,17 +44,17 @@ namespace YololFleetsGUI
             }
             else
             {
-                lblPlayerInstallationError.Text = $"The file {Preferences.playerFileName} could not be found in the selected folder";
+                lblPlayerInstallationError.Text = $"The file {UserPreferences.playerFileName} could not be found in the selected folder";
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            Preferences.current.CombatSimulatorPath = Path.GetDirectoryName(lblSimulatorInstallation.Text);
-            Preferences.current.PlayerPath = Path.GetDirectoryName(lblPlayerInstallation.Text);
-            Preferences.current.DefaultReplayFolder = lblDefaultReplayFolder.Text;
+            Program.preferences.CombatSimulatorPath = Path.GetDirectoryName(lblSimulatorInstallation.Text);
+            Program.preferences.PlayerPath = Path.GetDirectoryName(lblPlayerInstallation.Text);
+            Program.preferences.DefaultReplayFolder = lblDefaultReplayFolder.Text;
 
-            File.WriteAllText(Preferences.settingsFileName, JsonSerializer.Serialize(Preferences.current));
+            Program.preferences.Save();
 
             this.Close();
         }
@@ -68,9 +69,9 @@ namespace YololFleetsGUI
 
         private void Settings_Load(object sender, EventArgs e)
         {
-            lblSimulatorInstallation.Text = File.Exists(Preferences.current.CombatSimulatorFilePath) ? Preferences.current.CombatSimulatorFilePath : string.Empty;
-            lblPlayerInstallation.Text = File.Exists(Preferences.current.ReplayPlayerFilePath) ? Preferences.current.ReplayPlayerFilePath : string.Empty;
-            lblDefaultReplayFolder.Text = Preferences.current.DefaultReplayFolder;
+            lblSimulatorInstallation.Text = File.Exists(Program.preferences.CombatSimulatorFilePath) ? Program.preferences.CombatSimulatorFilePath : string.Empty;
+            lblPlayerInstallation.Text = File.Exists(Program.preferences.ReplayPlayerFilePath) ? Program.preferences.ReplayPlayerFilePath : string.Empty;
+            lblDefaultReplayFolder.Text = Program.preferences.DefaultReplayFolder;
         }
     }
 }

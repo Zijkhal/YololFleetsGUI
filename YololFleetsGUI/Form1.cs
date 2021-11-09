@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
+using YololFleetsGUI.Preferences;
 
 namespace YololFleetsGUI
 {
@@ -48,7 +49,7 @@ namespace YololFleetsGUI
         {
             lblWinner.Text = string.Empty;
 
-            string simulatorPath = Preferences.current.CombatSimulatorFilePath;
+            string simulatorPath = Program.preferences.CombatSimulatorFilePath;
 
             if (File.Exists(simulatorPath))
             {
@@ -139,7 +140,7 @@ namespace YololFleetsGUI
 
         private void btnWatchReplay_Click(object sender, EventArgs e)
         {
-            string playerPath = Preferences.current.ReplayPlayerFilePath;
+            string playerPath = Program.preferences.ReplayPlayerFilePath;
 
             if (File.Exists(playerPath))
             {
@@ -149,7 +150,7 @@ namespace YololFleetsGUI
 
                     replayPlayer = new Process();
                     replayPlayer.StartInfo.FileName = playerPath;
-                    replayPlayer.StartInfo.Arguments = Path.Combine(latestReplayPath, Preferences.defaultReplayFileName);
+                    replayPlayer.StartInfo.Arguments = Path.Combine(latestReplayPath, UserPreferences.defaultReplayFileName);
                     replayPlayer.EnableRaisingEvents = true;
 
                     replayPlayer.Exited += new EventHandler(ReplayPlayerExited);
@@ -201,16 +202,16 @@ namespace YololFleetsGUI
                 string fleet1Name = Path.GetFileNameWithoutExtension(tbFleet1.Text);
                 string fleet2Name = Path.GetFileNameWithoutExtension(tbFleet2.Text);
 
-                latestReplayPath = Path.Combine(Preferences.current.DefaultReplayFolder, $"{DateTimeToString(DateTime.Now)}_{fleet1Name}_vs_{fleet2Name}");
+                latestReplayPath = Path.Combine(Program.preferences.DefaultReplayFolder, $"{DateTimeToString(DateTime.Now)}_{fleet1Name}_vs_{fleet2Name}");
                 Directory.CreateDirectory(latestReplayPath);
 
                 string workingDirectory = Directory.GetCurrentDirectory();
 
-                File.Copy(Path.Combine(workingDirectory, Preferences.captainsLogAFileName), Path.Combine(latestReplayPath, $"CaptainsLog_A_{fleet1Name}.txt"));
+                File.Copy(Path.Combine(workingDirectory, UserPreferences.captainsLogAFileName), Path.Combine(latestReplayPath, $"CaptainsLog_A_{fleet1Name}.txt"));
 
-                File.Copy(Path.Combine(workingDirectory, Preferences.captainsLogBFileName), Path.Combine(latestReplayPath, $"CaptainsLog_B_{fleet2Name}.txt"));
+                File.Copy(Path.Combine(workingDirectory, UserPreferences.captainsLogBFileName), Path.Combine(latestReplayPath, $"CaptainsLog_B_{fleet2Name}.txt"));
 
-                File.Copy(Path.Combine(workingDirectory, Preferences.replayFileName), Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
+                File.Copy(Path.Combine(workingDirectory, UserPreferences.replayFileName), Path.Combine(latestReplayPath,UserPreferences.defaultReplayFileName));
             }
             catch (Exception ex)
             {
@@ -230,9 +231,9 @@ namespace YololFleetsGUI
                 {
                     lblWinner.Text = "Draw";
                 }
-                if (msg.Contains(Preferences.winnerMessageMarker))
+                if (msg.Contains(UserPreferences.winnerMessageMarker))
                 {
-                    lblWinner.Text = msg.Replace(Preferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
+                    lblWinner.Text = msg.Replace(UserPreferences.winnerMessageMarker, string.Empty).Replace(" - ", string.Empty);
                 }
                 rtbConsoleOutput.AppendText(msg + Environment.NewLine);
             }));
