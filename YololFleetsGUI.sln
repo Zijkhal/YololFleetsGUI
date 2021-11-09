@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YololFleetsGUI", "YololFlee
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YololFleetsGUI.Preferences", "YololFleetsGUI.Preferences\YololFleetsGUI.Preferences.csproj", "{221CB72D-A165-4434-95B1-C0D3A8964F28}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YololFleetsGUI.Updater", "YololFleetsGUI.Updater\YololFleetsGUI.Updater.csproj", "{4AA870D2-4B26-490E-A5EA-D329971690E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{221CB72D-A165-4434-95B1-C0D3A8964F28}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{221CB72D-A165-4434-95B1-C0D3A8964F28}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{221CB72D-A165-4434-95B1-C0D3A8964F28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AA870D2-4B26-490E-A5EA-D329971690E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AA870D2-4B26-490E-A5EA-D329971690E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AA870D2-4B26-490E-A5EA-D329971690E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AA870D2-4B26-490E-A5EA-D329971690E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

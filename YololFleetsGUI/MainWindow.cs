@@ -7,7 +7,7 @@ using YololFleetsGUI.Preferences;
 
 namespace YololFleetsGUI
 {
-    public partial class Form1 : Form
+    public partial class MainWindow : Form
     {
         private bool fleet1Selected = false;
         private bool fleet2Selected = false;
@@ -19,7 +19,7 @@ namespace YololFleetsGUI
 
         private string latestReplayPath = string.Empty;
 
-        public Form1()
+        public MainWindow()
         {
             InitializeComponent();
         }
@@ -100,43 +100,6 @@ namespace YololFleetsGUI
             settings.BringToFront();
             settings.Focus();
         }
-
-        #region deprecated
-        //no longer used
-        /*private void btnSaveReplay_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string replayFilePath = Path.Combine(latestReplayPath, Preferences.defaultReplayFileName);
-                if (Directory.Exists(latestReplayPath))
-                {
-                    saveReplayDialog.ShowDialog();
-
-                    DirectoryInfo dir = new DirectoryInfo(latestReplayPath);
-
-                    FileInfo[] files = dir.GetFiles();
-
-                    foreach(FileInfo file in files)
-                    {
-                        file.CopyTo(Path.Combine(saveReplayDialog.SelectedPath, file.Name));
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("replay not found");
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error has occured while trying to save the replay:{Environment.NewLine}{ex.Message}");
-            }
-        }*/
-
-        /*private void btnCopyReplayPath_Click(object sender, EventArgs e)
-        {
-            Clipboard.SetText(Path.Combine(latestReplayPath,Preferences.defaultReplayFileName));
-        }*/
-        #endregion
 
         private void btnWatchReplay_Click(object sender, EventArgs e)
         {
@@ -261,7 +224,7 @@ namespace YololFleetsGUI
         }
         #endregion
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        private void MainWindow_FormClosing(object sender, FormClosingEventArgs e)
         {
             StopProcess(combatSimulator, combatSimulatorRunning);
             //StopProcess(replayPlayer, replayPlayerRunning);

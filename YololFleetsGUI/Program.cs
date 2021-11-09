@@ -20,14 +20,14 @@ namespace YololFleetsGUI
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Unable to load user preferences. Initializing with default values{Environment.NewLine}{Environment.NewLine}Reason:{Environment.NewLine}{e.Message}");
+                MessageBox.Show($"Unable to load user preferences. Initializing with default values");
                 preferences = new UserPreferences();
             }
 
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new MainWindow());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace YololFleetsGUI
 {
-    partial class Form1
+    partial class MainWindow
     {
         /// <summary>
         ///  Required designer variable.
@@ -165,7 +165,7 @@ namespace YololFleetsGUI
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "Form1";
             this.Text = "Yolol Fleets GUI";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainWindow_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

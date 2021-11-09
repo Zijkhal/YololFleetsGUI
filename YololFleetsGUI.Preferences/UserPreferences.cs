@@ -131,6 +131,11 @@ namespace YololFleetsGUI.Preferences
         }
 
         /// <summary>
+        /// Update process should stop itself automatically after this time
+        /// </summary>
+        public TimeSpan Timeout { get; set; } = TimeSpan.FromSeconds(15);
+
+        /// <summary>
         /// Whether to check for updates when the GUI launches
         /// </summary>
         public bool CheckForUpdatesOnLaunch { get; set; } = true;
@@ -176,28 +181,28 @@ namespace YololFleetsGUI.Preferences
         /// <summary>
         /// Version of the replay player which was last installed by the updater
         /// </summary>
-        public long LastInstalledPlayerId { get; set; } = 0;
+        public int LastInstalledPlayerId { get; set; } = 0;
         /// <summary>
         /// Version of the simulator which was last installed by the updater
         /// </summary>
-        public long LastInstalledSimulatorId { get; set; } = 0;
+        public int LastInstalledSimulatorId { get; set; } = 0;
         /// <summary>
         /// Version of the GUI which was last installed by the updater
         /// </summary>
-        public long LastInstalledGuiId { get; set; } = 0;
+        public int LastInstalledGuiId { get; set; } = 0;
 
         /// <summary>
         /// Latest available version of the replay player on GitHub
         /// </summary>
-        public long LatestPlayerId { get; set; } = 0;
+        public int LatestPlayerId { get; set; } = 0;
         /// <summary>
         /// Latest available version of the simulator on GitHub
         /// </summary>
-        public long LatestSimulatorId { get; set; } = 0;
+        public int LatestSimulatorId { get; set; } = 0;
         /// <summary>
         /// Latest available version of the GUI on GitHub
         /// </summary>
-        public long LatestGuiId { get; set; } = 0;
+        public int LatestGuiId { get; set; } = 0;
         #endregion
 
 
