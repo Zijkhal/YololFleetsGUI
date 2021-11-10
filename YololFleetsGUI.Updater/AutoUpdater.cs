@@ -7,7 +7,7 @@ using Octokit;
 
 namespace YololFleetsGUI.Updater
 {
-    class AutoUpdater
+    static class AutoUpdater
     {
         public enum GitHubIds : long
         {
@@ -18,6 +18,11 @@ namespace YololFleetsGUI.Updater
 
         private static readonly GitHubClient client = new GitHubClient(new ProductHeaderValue("YololFleetsGUI"));
         private static readonly TimeSpan timeout = TimeSpan.FromSeconds(15);
+
+        static AutoUpdater()
+        {
+            client.SetRequestTimeout(timeout);
+        }
 
         public static Task<Release> GetLatestReleaseInfo(GitHubIds gitHubId)
         {
