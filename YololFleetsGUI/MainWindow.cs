@@ -145,6 +145,8 @@ namespace YololFleetsGUI
                 if (p.Responding)
                 {
                     p.CloseMainWindow();
+
+                    p.Close();
                 }
                 else
                 {

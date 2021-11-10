@@ -18,7 +18,7 @@ namespace YololFleetsGUI
             {
                 preferences = UserPreferences.FromDefaultSettingsFile();
             }
-            catch (Exception e)
+            catch
             {
                 MessageBox.Show($"Unable to load user preferences. Initializing with default values");
                 preferences = new UserPreferences();
