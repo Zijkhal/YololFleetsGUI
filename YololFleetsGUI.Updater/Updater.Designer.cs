@@ -43,6 +43,7 @@ namespace YololFleetsGUI.Updater
             this.lblGui = new System.Windows.Forms.Label();
             this.btnInstallAllUpdates = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.lblMessages = new System.Windows.Forms.Label();
             this.pnlSimulator.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
@@ -55,18 +56,19 @@ namespace YololFleetsGUI.Updater
             this.pnlSimulator.Controls.Add(this.lblSimulator);
             this.pnlSimulator.Location = new System.Drawing.Point(12, 12);
             this.pnlSimulator.Name = "pnlSimulator";
-            this.pnlSimulator.Size = new System.Drawing.Size(292, 27);
+            this.pnlSimulator.Size = new System.Drawing.Size(372, 27);
             this.pnlSimulator.TabIndex = 0;
             // 
             // btnInstallSimulatorUpdate
             // 
             this.btnInstallSimulatorUpdate.Enabled = false;
-            this.btnInstallSimulatorUpdate.Location = new System.Drawing.Point(194, 0);
+            this.btnInstallSimulatorUpdate.Location = new System.Drawing.Point(278, 0);
             this.btnInstallSimulatorUpdate.Name = "btnInstallSimulatorUpdate";
             this.btnInstallSimulatorUpdate.Size = new System.Drawing.Size(94, 23);
             this.btnInstallSimulatorUpdate.TabIndex = 2;
             this.btnInstallSimulatorUpdate.Text = "install ";
             this.btnInstallSimulatorUpdate.UseVisualStyleBackColor = true;
+            this.btnInstallSimulatorUpdate.Click += new System.EventHandler(this.btnInstallSimulatorUpdate_Click);
             // 
             // lblSimulatorUpdateStatus
             // 
@@ -94,18 +96,19 @@ namespace YololFleetsGUI.Updater
             this.panel1.Controls.Add(this.lblPlayer);
             this.panel1.Location = new System.Drawing.Point(12, 45);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 27);
+            this.panel1.Size = new System.Drawing.Size(372, 27);
             this.panel1.TabIndex = 3;
             // 
             // btnInstallPlayerUpdate
             // 
             this.btnInstallPlayerUpdate.Enabled = false;
-            this.btnInstallPlayerUpdate.Location = new System.Drawing.Point(194, 0);
+            this.btnInstallPlayerUpdate.Location = new System.Drawing.Point(278, 0);
             this.btnInstallPlayerUpdate.Name = "btnInstallPlayerUpdate";
             this.btnInstallPlayerUpdate.Size = new System.Drawing.Size(94, 23);
             this.btnInstallPlayerUpdate.TabIndex = 2;
             this.btnInstallPlayerUpdate.Text = "install ";
             this.btnInstallPlayerUpdate.UseVisualStyleBackColor = true;
+            this.btnInstallPlayerUpdate.Click += new System.EventHandler(this.btnInstallPlayerUpdate_Click);
             // 
             // lblPlayerUpdateStatus
             // 
@@ -132,18 +135,19 @@ namespace YololFleetsGUI.Updater
             this.panel2.Controls.Add(this.lblGui);
             this.panel2.Location = new System.Drawing.Point(12, 78);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(292, 27);
+            this.panel2.Size = new System.Drawing.Size(372, 27);
             this.panel2.TabIndex = 4;
             // 
             // btnInstallGuiUpdate
             // 
             this.btnInstallGuiUpdate.Enabled = false;
-            this.btnInstallGuiUpdate.Location = new System.Drawing.Point(194, 0);
+            this.btnInstallGuiUpdate.Location = new System.Drawing.Point(278, 0);
             this.btnInstallGuiUpdate.Name = "btnInstallGuiUpdate";
             this.btnInstallGuiUpdate.Size = new System.Drawing.Size(94, 23);
             this.btnInstallGuiUpdate.TabIndex = 2;
             this.btnInstallGuiUpdate.Text = "install ";
             this.btnInstallGuiUpdate.UseVisualStyleBackColor = true;
+            this.btnInstallGuiUpdate.Click += new System.EventHandler(this.btnInstallGuiUpdate_Click);
             // 
             // lblGuiUpdateStatus
             // 
@@ -166,27 +170,42 @@ namespace YololFleetsGUI.Updater
             // btnInstallAllUpdates
             // 
             this.btnInstallAllUpdates.Enabled = false;
-            this.btnInstallAllUpdates.Location = new System.Drawing.Point(206, 111);
+            this.btnInstallAllUpdates.Location = new System.Drawing.Point(290, 111);
             this.btnInstallAllUpdates.Name = "btnInstallAllUpdates";
             this.btnInstallAllUpdates.Size = new System.Drawing.Size(94, 23);
             this.btnInstallAllUpdates.TabIndex = 5;
             this.btnInstallAllUpdates.Text = "install all";
             this.btnInstallAllUpdates.UseVisualStyleBackColor = true;
+            this.btnInstallAllUpdates.Click += new System.EventHandler(this.btnInstallAllUpdates_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(674, 405);
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.Location = new System.Drawing.Point(411, 212);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(114, 33);
             this.button1.TabIndex = 6;
             this.button1.Text = "Skip Updates";
             this.button1.UseVisualStyleBackColor = true;
             // 
+            // lblMessages
+            // 
+            this.lblMessages.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblMessages.AutoSize = true;
+            this.lblMessages.ForeColor = System.Drawing.SystemColors.ControlDark;
+            this.lblMessages.Location = new System.Drawing.Point(12, 221);
+            this.lblMessages.Name = "lblMessages";
+            this.lblMessages.Size = new System.Drawing.Size(274, 15);
+            this.lblMessages.TabIndex = 7;
+            this.lblMessages.Text = "an error has occured while deleting temporary files";
+            this.lblMessages.Visible = false;
+            // 
             // frmUpdateWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(537, 257);
+            this.Controls.Add(this.lblMessages);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnInstallAllUpdates);
             this.Controls.Add(this.panel2);
@@ -202,6 +221,7 @@ namespace YololFleetsGUI.Updater
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -221,6 +241,7 @@ namespace YololFleetsGUI.Updater
         private System.Windows.Forms.Label lblGui;
         private System.Windows.Forms.Button btnInstallAllUpdates;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label lblMessages;
     }
 }
 
