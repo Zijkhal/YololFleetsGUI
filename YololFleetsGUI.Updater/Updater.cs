@@ -57,6 +57,34 @@ namespace YololFleetsGUI.Updater
                     }
                 }
             }
+            public DateTime LastUpdateCheck
+            {
+                get
+                {
+                    return gitHubId switch
+                    {
+                        GitHubIds.Player => Program.preferences.LastPlayerUpdateCheck,
+                        GitHubIds.Simulator => Program.preferences.LastSimulatorUpdateCheck,
+                        GitHubIds.GUI => Program.preferences.LastGuiUpdateCheck,
+                        _ => DateTime.MinValue
+                    };
+                }
+                set
+                {
+                    switch (gitHubId)
+                    {
+                        case GitHubIds.Player:
+                            Program.preferences.LastPlayerUpdateCheck = value;
+                            break;
+                        case GitHubIds.Simulator:
+                            Program.preferences.LastSimulatorUpdateCheck = value;
+                            break;
+                        case GitHubIds.GUI:
+                            Program.preferences.LastGuiUpdateCheck = value;
+                            break;
+                    }
+                }
+            }
             public int LastInstalledVersionId
             {
                 get
@@ -68,6 +96,21 @@ namespace YololFleetsGUI.Updater
                         GitHubIds.GUI => Program.preferences.LatestGuiId,
                         _ => 0
                     };
+                }
+                set
+                {
+                    switch (gitHubId)
+                    {
+                        case GitHubIds.Player:
+                            Program.preferences.LastInstalledPlayerId = value;
+                            break;
+                        case GitHubIds.Simulator:
+                            Program.preferences.LastInstalledSimulatorId = value;
+                            break;
+                        case GitHubIds.GUI:
+                            Program.preferences.LastInstalledGuiId = value;
+                            break;
+                    }
                 }
             }
             public string InstallationFolder
@@ -197,6 +240,10 @@ namespace YololFleetsGUI.Updater
             };
         }
 
+        /// <summary>
+        /// Check the relevant GitHub repo for new releases
+        /// </summary>
+        /// <param name="app">the app to check for updates</param>
         private async void CheckForUpdate(AppDetails app)
         {
             try
@@ -206,7 +253,8 @@ namespace YololFleetsGUI.Updater
 
                 // update id of latest available release
                 app.LatestAvailableVersionId = app.releaseInfo.Id;
-                
+                app.LastUpdateCheck = DateTime.Now;
+
                 if (app.releaseInfo.Id == app.LastInstalledVersionId)
                 {   // Up to date
                     app.statusLabel.Text = upToDateMessage;
@@ -214,7 +262,6 @@ namespace YololFleetsGUI.Updater
                 }
                 else
                 {   // Update found
-
                     app.updateFound = true;
                     app.statusLabel.Text = updatePendingMessage;
 
@@ -235,40 +282,87 @@ namespace YololFleetsGUI.Updater
             }
         }
 
-        private static void CopyFiles(DirectoryInfo from, DirectoryInfo to, bool recursive = true)
+        /// <summary>
+        /// Iterate through all items in directory, and perform action on them if they are not Ignored
+        /// </summary>
+        /// <param name="directory">Directory which contains the items to iterate through</param>
+        /// <param name="recursive">Whether to go into subdirectories</param>
+        /// <param name="Ignore">Tells the program whether to ignore the current file or folder (true = ignore)</param>
+        /// <param name="Action">Action to perform on each file and directory</param>
+        private static void ForAllItemsInDirectory(DirectoryInfo directory, bool recursive, Func<FileSystemInfo, bool> Ignore, Action<FileSystemInfo> Action)
         {
-            // rename old dll files which are used by the updater
-            foreach (FileInfo old in to.GetFiles())
+            if (!directory.Exists)
             {
-                if (old.Name.Contains("Octokit.dll") || old.Name.Contains("Preferences.dll"))
-                {
-                    old.MoveTo(Path.Combine(to.FullName, "OLD" + old.Name), true);
-                }
+                return;
             }
 
-            // copy files
-            // files of the Updater are copied with the "NEW" prefix
-            foreach (FileInfo file in from.GetFiles())
+            foreach (FileSystemInfo fsi in directory.GetFileSystemInfos())
             {
-                if (file.Name.StartsWith(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name))
+                if (fsi.Exists && !Ignore(fsi))
                 {
-                    file.CopyTo(Path.Combine(to.FullName, "NEW" + file.Name), true);
+                    if(recursive && fsi is DirectoryInfo)
+                    {
+                        ForAllItemsInDirectory(fsi as DirectoryInfo, recursive, Ignore, Action);
+                    }
+
+                    Action(fsi);
                 }
-                else
+            }
+        }
+
+        /// <summary>
+        /// Delete files of the currently installed (outdated) version
+        /// </summary>
+        /// <param name="directory">Directory containing the files to delete</param>
+        /// <param name="Ignore">Return true if file or directory is to be ignored (not deleted)</param>
+        /// <param name="recursive">Whether to go into subdirectories</param>
+        private static void CleanOutFolder(DirectoryInfo directory, Func<FileSystemInfo, bool> Ignore, bool recursive = true)
+        {
+            ForAllItemsInDirectory(directory,
+                recursive,
+                Ignore,
+                fsi =>
                 {
-                    file.CopyTo(Path.Combine(to.FullName, file.Name), true);
-                }
+                    if (fsi is DirectoryInfo && (fsi as DirectoryInfo).GetFileSystemInfos().Length != 0)
+                    {
+                        return;
+                    }
+                    fsi.Delete();
+                });
+        }
+
+        /// <summary>
+        /// Copy all files from source directory to destination directory
+        /// </summary>
+        /// <param name="source">Move files from here</param>
+        /// <param name="destination">Move files to here</param>
+        /// <param name="recursive">Whether to go into subdirectories</param>
+        private static void CopyFiles(DirectoryInfo source, DirectoryInfo destination, bool recursive = true)
+        {
+            // copy files, add "NEW" prefix to all file names
+            foreach (FileInfo file in source.GetFiles())
+            {
+                file.CopyTo(Path.Combine(destination.FullName, "NEW" + file.Name), true);
             }
 
             // do the same for all subDirectories
             if (recursive)
             {
-                foreach (DirectoryInfo subFrom in from.GetDirectories())
+                foreach (DirectoryInfo subDir in source.GetDirectories())
                 {
                     //Get or create destination directory
-                    DirectoryInfo subTo = Directory.CreateDirectory(Path.Combine(to.FullName, subFrom.Name));
+                    DirectoryInfo subTo = Directory.CreateDirectory(Path.Combine(destination.FullName, subDir.Name));
 
-                    CopyFiles(subFrom, subTo, recursive);
+                    CopyFiles(subDir, subTo, recursive);
+                }
+            }
+
+            // rename old dll files which are used by the updater
+            foreach (FileInfo old in destination.GetFiles())
+            {
+                if (old.Name.Contains("Octokit.dll") || old.Name.Contains("Preferences.dll"))
+                {
+                    old.MoveTo(Path.Combine(destination.FullName, "OLD" + old.Name), true);
                 }
             }
         }
@@ -279,12 +373,63 @@ namespace YololFleetsGUI.Updater
             app.statusLabel.ForeColor = Color.Red;
         }
 
-        private static void CopyExtractedFiles(AppDetails app)
+        /// <summary>
+        /// Remove the "NEW" prefix from the file names of the newly installed version
+        /// </summary>
+        /// <param name="directory">directory in which to rename the files</param>
+        /// <param name="Ignore">return true if current file or directory is to be ignored</param>
+        /// <param name="recursive">Whether to go into subdirectories</param>
+        private static void RenameNewFiles(DirectoryInfo directory, Func<FileSystemInfo, bool> Ignore, bool recursive = true)
+        {
+            ForAllItemsInDirectory(directory,
+                recursive,
+                Ignore,
+                fsi =>
+                {
+                    if (fsi.Name.StartsWith("NEW") && fsi is FileInfo)
+                    {
+                        (fsi as FileInfo).MoveTo(Path.Combine(directory.FullName, fsi.Name.Replace("NEW", "")));
+                    }
+                });
+        }
+
+        /// <summary>
+        /// Copy files from the temporary extraction folder to the installation folder
+        /// </summary>
+        /// <param name="app">move the files of this app</param>
+        private static void CopyExtractedFilesToInstallationFolder(AppDetails app)
         {
             DirectoryInfo downloadDirectory = new DirectoryInfo(app.TempDownloadFolder);
             DirectoryInfo installDirectory = new DirectoryInfo(app.InstallationFolder);
             
+            // copy the extracted files to the installation folder, add the "NEW" prefic to their names
             CopyFiles(downloadDirectory, installDirectory, true);
+
+            // delete old installation files
+            // ignore files which:
+            //   - start with "OLD" (dlls used by the updater)
+            //   - start with "NEW" (files of the new version)
+            //   - start with the name of this assembly (YololFleetsGUI.Updater - files of the updater)
+            //   - are on the ignore list in preferences (for example the settings.json file and the replays folder)
+            CleanOutFolder(installDirectory, fsi =>
+            {
+                return
+                    fsi.Name.StartsWith("OLD")
+                    || fsi.Name.StartsWith("NEW")
+                    || fsi.Name.StartsWith(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name)
+                    || Program.preferences.IgnoreList.Contains(fsi.Name);
+            });
+
+            // remove the new prefix of the files
+            // ignore files which:
+            //   - start with the name of this assembly (YololFleetsGUI.Updater - files of the updater)
+            //   - are on the ignore list in preferences (for example the settings.json file and the replays folder)
+            RenameNewFiles(installDirectory, fsi =>
+            {
+                return
+                    fsi.Name.StartsWith(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name)
+                    || Program.preferences.IgnoreList.Contains(fsi.Name);
+            });
         }
 
         private static void DeleteFolder(string path)
@@ -292,22 +437,6 @@ namespace YololFleetsGUI.Updater
             if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
-            }
-        }
-
-        private static void CleanOutFolder(DirectoryInfo directory, bool recursive = true)
-        {
-            foreach (FileInfo fi in directory.GetFiles())
-            {
-                fi.Delete();
-            }
-
-            if (recursive)
-            {
-                foreach(DirectoryInfo subDir in directory.GetDirectories())
-                {
-                    CleanOutFolder(subDir, true);
-                }
             }
         }
 
@@ -329,11 +458,15 @@ namespace YololFleetsGUI.Updater
                 app.statusLabel.Text = updateFoundMessage;
 
 
-                // clean out temporary folders
+                // Ensure that temporary folders are empty
                 await Task.Run(() =>
                 {
-                    CleanOutFolder(Directory.CreateDirectory(app.TempDownloadFolder));
-                    CleanOutFolder(Directory.CreateDirectory(app.TempExtractionFolder));
+                    DeleteFolder(app.TempDownloadFolder);
+                    DeleteFolder(app.TempExtractionFolder);
+
+                    Directory.CreateDirectory(app.TempDownloadFolder);
+                    Directory.CreateDirectory(app.TempExtractionFolder);
+                    
                 });
 
                 // download files
@@ -352,11 +485,14 @@ namespace YololFleetsGUI.Updater
                 // if copying items whose name starts with YololFleetsGui.Updater, copy with an alternative name
                 // main app on startup will handle deleting old versions, and renaming alternative versions to the correct ones
                 app.statusLabel.Text = copyingFilesMessage;
-                await Task.Run(() => CopyExtractedFiles(app));
+                await Task.Run(() => CopyExtractedFilesToInstallationFolder(app));
 
+                // Update succesful
                 app.statusLabel.Text = updateSuccessfulMessage;
                 app.statusLabel.ForeColor = Color.Green;
                 app.updateCompleted = true;
+
+                app.LastInstalledVersionId = app.LatestAvailableVersionId;
             }
             catch
             {

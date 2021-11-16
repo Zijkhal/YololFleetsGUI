@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -203,6 +204,12 @@ namespace YololFleetsGUI.Preferences
         /// Latest available version of the GUI on GitHub
         /// </summary>
         public int LatestGuiId { get; set; } = 0;
+
+        /// <summary>
+        /// names of the files and folders which are preserved during update
+        /// </summary>
+        [JsonIgnore]
+        public List<string> IgnoreList { get; set; } = new();
         #endregion
 
 
@@ -235,6 +242,12 @@ namespace YololFleetsGUI.Preferences
         public static UserPreferences FromDefaultSettingsFile()
         {
             return FromJsonFile(defaultSettingsFileName);
+        }
+
+        public UserPreferences()
+        {
+            IgnoreList.Add(defaultSettingsFileName);
+            IgnoreList.Add(DefaultReplayFolder);
         }
 
         /// <summary>
